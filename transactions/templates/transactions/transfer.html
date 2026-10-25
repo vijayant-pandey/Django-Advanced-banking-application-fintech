@@ -1,0 +1,44 @@
+{% extends 'authentication/base.html' %}
+
+{% block content %}
+<h3>Transfer Money</h3>
+
+{% if error %}
+    <p style="color: red; font-weight: bold;">
+        {{ error }}
+    </p>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    <label>To Account Number:</label><br>
+    <input type="text" name="to_account" required><br><br>
+
+    <label>Amount:</label><br>
+    <input type="number" step="0.01" name="amount" required><br><br>
+
+    <label>Currency</label>
+    <select name="currency" required>
+        {% for c in currencies %}
+            <option value="{{ c.code }}">
+                {{ c.code }} ({{ c.symbol }})
+            </option>
+        {% endfor %}
+    </select>
+    <br><br>
+
+    <label>Transfer Channel</label><br>
+    <select name="channel" required>
+        <option value="NEFT">NEFT</option>
+        <option value="RTGS">RTGS</option>
+        <option value="IMPS">IMPS</option>
+        <option value="UPI">UPI</option>
+        <option value="INTERNAL">Internal Transfer</option>
+        <option value="FX">FX (Currency Conversion)</option>
+    </select>
+    <br><br>
+
+
+    <button type="submit">Submit Transfer</button>
+</form>
+{% endblock %}

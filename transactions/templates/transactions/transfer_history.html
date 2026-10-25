@@ -1,0 +1,29 @@
+{% extends 'authentication/base.html' %}
+
+{% block content %}
+<h3>Transfer History</h3>
+
+<table border="1">
+<tr>
+    <th>From</th>
+    <th>To</th>
+    <th>Amount</th>
+    <th>Status</th>
+    <th>Date</th>
+</tr>
+
+{% for t in transfers %}
+<tr>
+    <td>{{ t.from_account.account_number }}</td>
+    <td>{{ t.to_account.account_number }}</td>
+    <td>{{ t.amount }}</td>
+    <td>
+        {% if t.is_approved %}Approved
+        {% elif t.is_rejected %}Rejected
+        {% else %}Pending{% endif %}
+    </td>
+    <td>{{ t.created_at }}</td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Banking System{% endblock %}</title>
+</head>
+<body>
+
+    <h2>🏦 Enterprise Banking System</h2>
+
+    {% if user.is_authenticated %}
+        <p>
+            Logged in as {{ user.username }}
+        </p>
+
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+    {% endif %}
+
+    <hr>
+
+    {% block content %}
+    {% endblock %}
+
+</body>
+</html>

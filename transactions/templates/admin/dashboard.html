@@ -1,0 +1,176 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+
+<h1>Bank Operations Dashboard</h1>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<hr>
+
+<h2>FX Income</h2>
+<p><strong>Today:</strong> ₹{{ fx_daily }}</p>
+<p><strong>This Month:</strong> ₹{{ fx_monthly }}</p>
+<canvas id="fxCurrencyChart" height="120"></canvas>
+
+<hr>
+
+<h2>AML Alerts</h2>
+<p><strong>Alerts Today:</strong> {{ aml_today }}</p>
+
+<div style="display:flex; gap:40px;">
+    <canvas id="amlTypeChart" width="300"></canvas>
+    <canvas id="amlStatusChart" width="300"></canvas>
+</div>
+
+<hr>
+
+<h2>Currency Exposure</h2>
+<canvas id="exposureChart" height="120"></canvas>
+
+<hr>
+
+<h2>Transaction Volume</h2>
+
+<h3>Daily Transaction Volume (INR)</h3>
+<canvas id="txDailyChart" height="120"></canvas>
+
+<h3>Transaction Type Breakdown</h3>
+<canvas id="txTypeChart" width="300"></canvas>
+
+<h3>Transaction Volume by Currency (INR)</h3>
+<canvas id="txCurrencyChart" height="120"></canvas>
+
+
+<hr>
+<h2>GST Collection (Monthly)</h2>
+<canvas id="gstMonthlyChart" height="120"></canvas>
+
+<hr>
+<h2>FX Income vs GST (Monthly)</h2>
+<canvas id="fxGstTrendChart" height="120"></canvas>
+
+
+
+<script>
+new Chart(document.getElementById('fxCurrencyChart'), {
+    type: 'bar',
+    data: {
+        labels: {{ fx_labels|safe }},
+        datasets: [{
+            label: "FX Income (INR)",
+            data: {{ fx_values|safe }},
+            backgroundColor: "rgba(54, 162, 235, 0.7)"
+        }]
+    }
+});
+
+new Chart(document.getElementById('amlTypeChart'), {
+    type: 'pie',
+    data: {
+        labels: {{ aml_type_labels|safe }},
+        datasets: [{
+            data: {{ aml_type_values|safe }},
+            backgroundColor: ["#ff6384", "#ffcd56", "#36a2eb"]
+        }]
+    }
+});
+
+new Chart(document.getElementById('amlStatusChart'), {
+    type: 'doughnut',
+    data: {
+        labels: {{ aml_status_labels|safe }},
+        datasets: [{
+            data: {{ aml_status_values|safe }},
+            backgroundColor: ["#4caf50", "#f44336"]
+        }]
+    }
+});
+
+new Chart(document.getElementById('exposureChart'), {
+    type: 'bar',
+    data: {
+        labels: {{ exposure_labels|safe }},
+        datasets: [{
+            label: "Total Balance",
+            data: {{ exposure_values|safe }},
+            backgroundColor: "rgba(153, 102, 255, 0.7)"
+        }]
+    }
+});
+
+new Chart(document.getElementById('txDailyChart'), {
+    type: 'line',
+    data: {
+        labels: {{ tx_daily_labels|safe }},
+        datasets: [{
+            label: "Daily Transaction Volume (₹)",
+            data: {{ tx_daily_values|safe }},
+            borderWidth: 2,
+            tension: 0.3
+        }]
+    }
+});
+
+new Chart(document.getElementById('txTypeChart'), {
+    type: 'pie',
+    data: {
+        labels: {{ tx_type_labels|safe }},
+        datasets: [{
+            data: {{ tx_type_values|safe }}
+        }]
+    }
+});
+
+new Chart(document.getElementById('txCurrencyChart'), {
+    type: 'bar',
+    data: {
+        labels: {{ tx_currency_labels|safe }},
+        datasets: [{
+            label: "INR Volume",
+            data: {{ tx_currency_values|safe }}
+        }]
+    }
+});
+
+
+new Chart(document.getElementById('gstMonthlyChart'), {
+    type: 'line',
+    data: {
+        labels: {{ gst_month_labels|safe }},
+        datasets: [{
+            label: "GST Collected (₹)",
+            data: {{ gst_month_values|safe }},
+            borderWidth: 2,
+            tension: 0.3,
+            borderColor: "rgba(255, 99, 132, 1)"
+        }]
+    }
+});
+
+
+new Chart(document.getElementById('fxGstTrendChart'), {
+    type: 'line',
+    data: {
+        labels: {{ fx_month_trend_labels|safe }},
+        datasets: [
+            {
+                label: "FX Income (₹)",
+                data: {{ fx_month_trend_values|safe }},
+                borderColor: "#36a2eb",
+                borderWidth: 2,
+                tension: 0.3
+            },
+            {
+                label: "GST Collected (₹)",
+                data: {{ gst_month_values|safe }},
+                borderColor: "#ff6384",
+                borderWidth: 2,
+                tension: 0.3
+            }
+        ]
+    }
+});
+
+</script>
+
+{% endblock %}

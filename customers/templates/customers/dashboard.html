@@ -1,0 +1,62 @@
+{% extends 'authentication/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h3>Customer Dashboard</h3>
+
+<p>Welcome, {{ user.username }}</p>
+
+{% if account %}
+    <h4>Account Details</h4>
+
+    <p><strong>Account Number:</strong> {{ account.account_number }}</p>
+    <p><strong>Account Type:</strong> {{ account.account_type }}</p>
+
+    {% if account.is_active %}
+        <p style="color: green;">Account Status: Active</p>
+    {% else %}
+        <p style="color: red;">Account Status: Pending Approval</p>
+    {% endif %}
+
+    <hr>
+
+    <!-- ✅ MULTI-CURRENCY WALLETS (NEW) -->
+    <h3>Your Wallets</h3>
+
+    {% if wallets %}
+        <table border="1" cellpadding="6">
+            <tr>
+                <th>Currency</th>
+                <th>Balance</th>
+                
+
+            </tr>
+
+            {% for wallet in wallets %}
+            <tr>
+                <td>{{ wallet.currency.code }}</td>
+                <!-- <td>{{ wallet.balance }} {{ wallet.currency.symbol }}</td> -->
+                <td>{{ wallet.currency.symbol }} {{ wallet.balance }}</td>
+
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No wallets found.</p>
+    {% endif %}
+
+    <br>
+
+    {% if account.is_active %}
+        <a href="{% url 'deposit' %}">Deposit</a> |
+        <a href="{% url 'withdraw' %}">Withdraw</a> |
+        <a href="{% url 'transfer' %}">Transfer</a> |
+        <a href="{% url 'transfer_history' %}">Transfer History</a>
+    {% endif %}
+
+{% else %}
+    <p>No bank account found.</p>
+{% endif %}
+
+{% endblock %}

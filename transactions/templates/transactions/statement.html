@@ -1,0 +1,82 @@
+{% extends 'authentication/base.html' %}
+{% block content %}
+
+<h3>Account Statement</h3>
+
+<table border="1" cellpadding="6">
+<tr>
+    <th>Date</th>
+    <th>Details</th>
+    <th>Mode</th>
+    <th>Debit</th>
+    <th>Debit Currency</th>
+    <th>Credit</th>
+    <th>Credit Currency</th>
+</tr>
+
+{% for tx in transactions %}
+<tr>
+    <td>{{ tx.created_at }}</td>
+
+    <td>
+        {% if tx.transaction_type == 'WITHDRAW' %}
+            Transfer / Withdrawal
+        {% else %}
+            Deposit / Credit
+        {% endif %}
+    </td>
+
+    <!-- <td> -->
+        <!-- {% if tx.mode %} -->
+            <!-- {{ tx.mode }} -->
+        <!-- {% else %} -->
+            <!-- CASH -->
+        <!-- {% endif %} -->
+    <!-- </td> -->
+
+    <td>
+        {{ tx.mode }}
+        {% if tx.channel %}
+            - {{ tx.channel }}
+        {% endif %}
+        {% if tx.reference_number %}
+            ({{ tx.reference_number }})
+        {% endif %}
+    </td>
+
+
+    <td>
+        {% if tx.transaction_type == 'WITHDRAW' %}
+            {{ tx.amount }}
+        {% endif %}
+    </td>
+
+    <td>
+        {% if tx.transaction_type == 'WITHDRAW' %}
+            {{ tx.wallet.currency.code }}
+        {% endif %}
+    </td>
+
+    <td>
+        {% if tx.transaction_type == 'DEPOSIT' %}
+            {{ tx.amount }}
+        {% endif %}
+    </td>
+
+    <td>
+        {% if tx.transaction_type == 'DEPOSIT' %}
+            {{ tx.wallet.currency.code }}
+        {% endif %}
+    </td>
+</tr>
+{% endfor %}
+</table>
+
+<h4>Current Balances</h4>
+<ul>
+{% for w in wallets %}
+    <li>{{ w.currency.code }} : {{ w.balance }}</li>
+{% endfor %}
+</ul>
+
+{% endblock %}

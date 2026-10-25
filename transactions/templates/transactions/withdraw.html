@@ -1,0 +1,28 @@
+{% extends 'authentication/base.html' %}
+
+{% block content %}
+<h3>Withdraw Money</h3>
+
+{% if error %}
+<p style="color:red;">{{ error }}</p>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+
+    Amount:<br>
+    <input type="number" step="0.01" name="amount" required><br><br>
+
+    Currency:<br>
+    <select name="currency">
+        {% for c in currencies %}
+            <option value="{{ c.code }}">
+                {{ c.code }} ({{ c.symbol }})
+            </option>
+        {% endfor %}
+    </select><br><br>
+
+
+    <button type="submit">Withdraw</button>
+</form>
+{% endblock %}
