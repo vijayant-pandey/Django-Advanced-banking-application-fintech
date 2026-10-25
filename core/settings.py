@@ -157,16 +157,5 @@ X_FRAME_OPTIONS = 'DENY'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# ================= UPI PSP MOCK SECRET =================
 
-
-# http://127.0.0.1:8000/auth/register/ --> for registration page
-# http://127.0.0.1:8000/auth/login/ --> for login page
-# admin--> username is admin--> password is admin
-# user1 and user2 --> pw is --> user@123_11
-# http://127.0.0.1:8000/dashboard/ --> for user dashboard when logged in
-
-# http://127.0.0.1:8000/transactions/dashboard/admin/ --> for admin dashboard charts
-# http://127.0.0.1:8000/transactions/statement/ --> for statement page in passbook
-# http://127.0.0.1:8000/transactions/transfers/history/ --> for transfer history page 
 
