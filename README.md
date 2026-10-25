@@ -89,6 +89,7 @@ Base URL when running locally: `http://127.0.0.1:8000`
 
 | URL | Who | Description |
 |---|---|---|
+| `/` | Public | Landing page with Register and Login buttons |
 | `/auth/register/` | Public | Create a customer account |
 | `/auth/login/` | Public | Log in |
 | `/auth/logout/` | Logged-in user | Log out |

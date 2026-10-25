@@ -36,6 +36,10 @@ from accounts.models import Wallet
 #         }
 #     )
 
+def home(request):
+    return render(request, 'customers/home.html')
+
+
 @login_required
 def dashboard(request):
     account = BankAccount.objects.get(customer__user=request.user)

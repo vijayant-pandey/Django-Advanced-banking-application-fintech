@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Banking | Django FinTech</title>
+    <style>
+        :root {
+            --bg: #0b1220;
+            --bg-soft: #111a2e;
+            --card: #152038;
+            --border: #22304d;
+            --text: #e6ecf7;
+            --muted: #94a3c0;
+            --accent: #22c3a6;
+            --accent-dark: #179c84;
+            --gold: #f5b942;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+            background: radial-gradient(1200px 600px at 80% -10%, #1b2f55 0%, transparent 60%),
+                        radial-gradient(900px 500px at -10% 110%, #123a3a 0%, transparent 55%),
+                        var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+
+        /* ---------- Nav ---------- */
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 22px 0;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.15rem;
+            letter-spacing: .3px;
+        }
+        .brand-logo {
+            width: 38px; height: 38px;
+            border-radius: 10px;
+            display: grid; place-items: center;
+            background: linear-gradient(135deg, var(--accent), #3b82f6);
+            font-size: 1.2rem;
+        }
+        .nav-links { display: flex; gap: 10px; }
+
+        /* ---------- Buttons ---------- */
+        .btn {
+            display: inline-block;
+            padding: 12px 26px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: .98rem;
+            text-decoration: none;
+            transition: transform .15s ease, background .15s ease, border-color .15s ease;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .btn-primary { background: var(--accent); color: #062420; }
+        .btn-primary:hover { background: var(--accent-dark); }
+        .btn-outline { border: 1.5px solid var(--border); color: var(--text); }
+        .btn-outline:hover { border-color: var(--accent); }
+        .btn-sm { padding: 8px 18px; font-size: .9rem; }
+
+        /* ---------- Hero ---------- */
+        .hero {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: rgba(34, 195, 166, .08);
+            color: var(--accent);
+            font-size: .82rem;
+            font-weight: 600;
+            margin-bottom: 22px;
+        }
+        .hero h1 {
+            font-size: clamp(2.1rem, 5vw, 3.5rem);
+            line-height: 1.15;
+            margin-bottom: 18px;
+        }
+        .hero h1 span {
+            background: linear-gradient(90deg, var(--accent), #60a5fa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .hero p {
+            color: var(--muted);
+            max-width: 640px;
+            margin: 0 auto 34px;
+            font-size: 1.08rem;
+        }
+        .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+        /* ---------- Rails strip ---------- */
+        .rails {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 10px 0 70px;
+        }
+        .rail {
+            padding: 6px 16px;
+            border-radius: 8px;
+            background: var(--bg-soft);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-size: .85rem;
+            font-weight: 600;
+            letter-spacing: .5px;
+        }
+
+        /* ---------- Features ---------- */
+        .section-title {
+            text-align: center;
+            font-size: 1.6rem;
+            margin-bottom: 30px;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+            margin-bottom: 70px;
+        }
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 24px;
+            transition: border-color .2s ease, transform .2s ease;
+        }
+        .card:hover { border-color: var(--accent); transform: translateY(-3px); }
+        .card .icon { font-size: 1.6rem; margin-bottom: 12px; }
+        .card h3 { font-size: 1.05rem; margin-bottom: 8px; }
+        .card p { color: var(--muted); font-size: .93rem; }
+
+        /* ---------- CTA ---------- */
+        .cta {
+            text-align: center;
+            background: linear-gradient(135deg, #14304a, #10353a);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 46px 24px;
+            margin-bottom: 60px;
+        }
+        .cta h2 { font-size: 1.6rem; margin-bottom: 10px; }
+        .cta p { color: var(--muted); margin-bottom: 24px; }
+
+        footer {
+            text-align: center;
+            color: var(--muted);
+            font-size: .85rem;
+            padding: 24px 0 34px;
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 560px) {
+            .nav-links .btn-outline { display: none; }
+            .hero { padding: 50px 0 40px; }
+            .hero-actions .btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <nav>
+            <div class="brand">
+                <div class="brand-logo">🏦</div>
+                Advanced Banking
+            </div>
+            <div class="nav-links">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'dashboard' %}" class="btn btn-primary btn-sm">Dashboard</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-outline btn-sm">Login</a>
+                    <a href="{% url 'register' %}" class="btn btn-primary btn-sm">Register</a>
+                {% endif %}
+            </div>
+        </nav>
+
+        <section class="hero">
+            <span class="badge">Django · FinTech · Core Banking</span>
+            <h1>Banking built for the<br><span>modern financial world</span></h1>
+            <p>
+                Multi-currency wallets, real-time transfers across India's payment rails,
+                FX conversion, AML monitoring and regulatory reporting, all in one secure platform.
+            </p>
+            <div class="hero-actions">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'dashboard' %}" class="btn btn-primary">Go to Dashboard</a>
+                {% else %}
+                    <a href="{% url 'register' %}" class="btn btn-primary">Open an Account</a>
+                    <a href="{% url 'login' %}" class="btn btn-outline">Login</a>
+                {% endif %}
+            </div>
+        </section>
+
+        <div class="rails">
+            <span class="rail">NEFT</span>
+            <span class="rail">RTGS</span>
+            <span class="rail">IMPS</span>
+            <span class="rail">UPI</span>
+            <span class="rail">INTERNAL</span>
+            <span class="rail">FX</span>
+        </div>
+
+        <h2 class="section-title">Everything a modern bank needs</h2>
+        <section class="features">
+            <div class="card">
+                <div class="icon">💱</div>
+                <h3>Multi-Currency Wallets</h3>
+                <p>Hold INR, USD, EUR and more in one account, with live FX rates and rate locking.</p>
+            </div>
+            <div class="card">
+                <div class="icon">⚡</div>
+                <h3>Instant Transfers</h3>
+                <p>Send money over NEFT, RTGS, IMPS and UPI, with smart routing and transparent fees.</p>
+            </div>
+            <div class="card">
+                <div class="icon">🛡️</div>
+                <h3>AML Monitoring</h3>
+                <p>Automatic alerts for daily limits, rapid transactions and suspicious FX activity.</p>
+            </div>
+            <div class="card">
+                <div class="icon">📊</div>
+                <h3>Analytics &amp; Reports</h3>
+                <p>Live operations dashboard plus RBI, GST and FX income reports in CSV, PDF and Excel.</p>
+            </div>
+            <div class="card">
+                <div class="icon">🧾</div>
+                <h3>GST Compliance</h3>
+                <p>18% GST on fees, recorded in a dedicated ledger, with monthly GSTR-3B summaries.</p>
+            </div>
+            <div class="card">
+                <div class="icon">🔍</div>
+                <h3>Full Audit Trail</h3>
+                <p>Every login, transfer and reversal is logged with user and IP address.</p>
+            </div>
+        </section>
+
+        {% if not user.is_authenticated %}
+        <section class="cta">
+            <h2>Ready to get started?</h2>
+            <p>Create your account in under a minute. It's activated after admin verification.</p>
+            <div class="hero-actions">
+                <a href="{% url 'register' %}" class="btn btn-primary">Register</a>
+                <a href="{% url 'login' %}" class="btn btn-outline">Login</a>
+            </div>
+        </section>
+        {% endif %}
+
+        <footer>
+            © {% now "Y" %} Advanced Banking · Django FinTech Application
+        </footer>
+
+    </div>
+</body>
+</html>
